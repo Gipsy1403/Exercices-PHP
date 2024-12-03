@@ -6,6 +6,103 @@
 	<title>exo PHP</title>
 </head>
 <body>
+<h1>Exercices PHP - FORMULAIRE</h1>
+
+<h2>Exercice 1</h2><br>
+<?php
+if(isset($_GET["ville"]) && (isset($_GET["transport"]))){
+
+echo "<p>La ville choisie est ".$_GET["ville"]." et le voyage se fera en ".$_GET["transport"]."...!</p>";
+}
+?> <br>
+
+<h2>Exercice 2</h2><br>
+<form action="index.php" method="GET">
+	<label for="animal">Quel est votre animal favori ?</label>
+	<input type="text" id="animal" name= "animal">
+	<button>Envoyer</button>
+</form>
+<?php
+if(isset($_GET["animal"])){
+	$animal= $_GET["animal"];
+	echo "<p>Votre animal choisi est" .$_get["animal"].".</p>";
+	}
+?> <br>
+
+<h2>Exercice 3</h2><br>
+<form action="index.php" method="post">
+	<label for="couleur">Choisis une couleur.</label>
+	<input type="color" id="couleur" name="couleur" value="#e66465" />
+	<button>clic</button>
+</form>
+<?php
+if(isset($_POST["couleur"])){
+	$couleurs= $_POST["couleur"];
+	// echo "<p style='background-color:'.$_POST["couleur"].'>Voici la couleur choisie</p>";
+}
+?> <br>
+
+
+<h2>Exercice 4</h2><br>
+<form action="index.php" method="post">
+	<label for="des">Mets un nombre multiple de 6</label>
+	<input type="number" id="des" name= "des">
+	<button>Lance les dés</button>
+</form>
+<?php
+if(isset($_POST["des"])){
+	$des= $_POST["des"];
+
+echo ($des%6==0) ? "Bravo tu as réussi": "Ce n'est pas un multiple de 6, réessaie";
+}
+
+?> <br>
+
+<h2>Exercice 5</h2><br>
+<form action="index.php" method="post">
+	<label for="admin">Nom</label>
+	<input type="text" id="admin" name= "admin">
+	<label for="mdp">Mot de Passe :</label>
+	<input type="number" id="mdp" name= "mdp">
+	<button>Envoyer</button>
+</form>
+<?php
+if(isset($_POST["admin"])){
+	$admin= $_POST["admin"];
+}
+if(isset($_POST["mdp"])){
+	$mdp= $_POST["mdp"];
+}
+
+
+?> <br>
+
+
+	<h2 id="formpair">Est pair</h2>
+	<form action="index.php#formpair" method="POST">
+		<label for="EstPair">Entrez un nombre</label>
+		<input type="number" id="EstPair" name= "EstPair">
+		<button>Envoyer</button>
+	</form>
+<?php
+	function EstPair($nbre){
+		if($nbre%2==0){
+			return TRUE;
+		}else{
+			return FALSE;
+		}
+	}
+	if(isset($_POST["EstPair"])){
+		$EstPair= $_POST["EstPair"];
+		}
+	if(EstPair($EstPair)){
+		echo "Le chiffre ".$EstPair." est paire";
+	}else{
+		echo "le chiffre " .$EstPair. " est impair";
+	}
+
+
+?>
 	<?php include("header.php") ?>
 	<h2>Exercice 1</h2><?php 
 	for($i=0;$i<=25;$i++){
@@ -28,7 +125,6 @@ for($y=0;$y<=25;$y++){
 	echo $x ." ";
 }
 }
-
 	?>
 	<br>
 
@@ -42,25 +138,15 @@ echo $n;
 	<br>
 
 	<h2>Exercice 5 </h2><br><?php 
+
+
 function Addition($firstNumber, $secondNumber){
 	$total=$firstNumber+$secondNumber;
 	return $total;
 }
 echo Addition(6,8) ."<br>";
 
-function EstPair($nbre){
-	if($nbre%2==0){
-		return TRUE;
-	}else{
-		return FALSE;
-	}
-}
-if(EstPair(11)){
-	echo "Le chiffre est paire";
 
-}else{
-	echo "le chiffre est impair";
-}
 	 ?>
 	<br>
 
@@ -149,10 +235,15 @@ print_r($nbre);
 <br>
 
 
-	<h1>EXercice</h1><?php 
+	<h1>Exercice</h1><?php 
 	$info ="h2";
 	echo "<".$info."> sous-titre</".$info.">";
 	?>
 	<?php include("footer.php") ?>
+
+
+
+
+
 </body>
 </html>
