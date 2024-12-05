@@ -38,7 +38,8 @@ if(isset($_GET["animal"])){
 <?php
 if(isset($_POST["couleur"])){
 	$couleurs= $_POST["couleur"];
-	// echo "<p style='background-color:'.$_POST["couleur"].'>Voici la couleur choisie</p>";
+	echo $couleurs;
+	echo "<p style='background-color:".$couleurs."'>Voici la couleur choisie</p>";
 }
 ?> <br>
 
@@ -52,31 +53,109 @@ if(isset($_POST["couleur"])){
 <?php
 if(isset($_POST["des"])){
 	$des= $_POST["des"];
-
-echo ($des%6==0) ? "Bravo tu as réussi": "Ce n'est pas un multiple de 6, réessaie";
+	if($des%6==0){
+	echo rand(1,$des);
+	}else{
+		header("location:index.php?error=ce n'est pas un multiple de 6"); 
+		// permet d'afficher un messsage d'erreur dans l'URL	
+	}
 }
-
+if(isset($_GET["error"])){
+	echo $_GET["error"];
+	// permet d'afficher ce message d'erreur lorsque le nombre n'est pas correcte
+};
 ?> <br>
 
 <h2>Exercice 5</h2><br>
 <form action="index.php" method="post">
-	<label for="admin">Nom</label>
-	<input type="text" id="admin" name= "admin">
+	<label for="name">Nom</label>
+	<input type="text" id="name" name= "name">
 	<label for="mdp">Mot de Passe :</label>
-	<input type="number" id="mdp" name= "mdp">
+	<input type="password" id="mdp" name= "mdp">
 	<button>Envoyer</button>
 </form>
 <?php
-if(isset($_POST["admin"])){
-	$admin= $_POST["admin"];
-}
-if(isset($_POST["mdp"])){
+$nameAdmin="admin";
+$mdpAdmin=1234;
+if(isset($_POST["name"])&& ($_POST["mdp"])){
+	$name= $_POST["name"];
 	$mdp= $_POST["mdp"];
+	// hache le mdp cad le crypter avec ARGON2
+	$mdpHash = password_hash($mdpAdmin, PASSWORD_ARGON2I);
+	if(($nameAdmin==$name)&&(password_verify($mdp,$mdpHash))){
+		// si le nom (donnée) est égal au nom de la base de donnée et que le mdp correspond au bon mdp vérifié( par la fonction password_verify)
+		header("location:header.php");
+		// si vrai, il ouvre une nouvelle page
+	}else{
+		echo "Message d'erreur: votre identification n'est pas correcte. Vérifiez votre nom ou votre mot de passe !";
+	}
 }
-
 
 ?> <br>
 
+
+
+
+<h2>Exercice 6</h2><br>
+<form action="index.php" method="post">
+	<label for="number1">Mets un nombre</label>
+	<input type="number" id="number1" name= "number1">
+	<label for="number2">Mets un autre nombre</label>
+	<input type="number" id="number2" name= "number2">
+	<select name="operation" id="operation">
+		<option value="multiplication">Multiplication</option>
+		<option value="soustraction">Soustraction</option>
+		<option value="addition">Addition</option>
+		<option value="division">Division</option>
+	</select>
+	<button>Calcul</button>
+</form>
+<?php
+if(isset($_POST["nombre1"])&& ($_POST["nombre2"])&&($_POST["operation"] )){
+	$nombre1= $_POST["nombre1"];
+	$nombre2= $_POST["nombre2"];
+	$operation= $_POST["operation"];
+
+	switch ($operation) {
+		case 'addition':
+		    $resultat = $nombre1 + $nombre2;
+		    break;
+		case 'soustraction':
+		    $resultat = $nombre1 - $nombre2;
+		    break;
+		case 'multiplication':
+		    $resultat = $nombre1 * $nombre2;
+		    break;
+		case 'division':
+		    if ($nombre2 == 0) {
+			   $error = "Erreur : Division par zéro interdite.";
+		    } else {
+			   $resultat = $nombre1 / $nombre2;
+		    }
+		    break;
+		default:
+		    $error = "Erreur : Opération non valide.";
+		    break;
+	 }
+}
+?> <br>
+
+<h2>Exercice 10</h2><br>
+<form action="index.php" method="post" enctype="multipart/form-data">
+	<input type="file" name= "userfile">
+	<button>envoyer</button>
+</form>
+<?php
+// print_r($_FILES);
+var_dump($_FILES["userfile"]);
+$fileName =$_FILES["userfile"]["name"];
+$temp=$_FILES["userfile"]["tmp_name"];
+
+// var_dump(pathinfo($nomFichier));
+move_uploaded_file($temp,"image/".$fileName);
+
+
+?> <br>
 
 	<h2 id="formpair">Est pair</h2>
 	<form action="index.php#formpair" method="POST">
